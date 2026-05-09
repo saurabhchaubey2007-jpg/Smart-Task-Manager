@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Smart Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="dashboard-page" data-page="dashboard">
+    <header class="top-bar">
+      <div>
+        <h1><i class="fas fa-tasks"></i> Smart Task Manager</h1>
+        <p class="subtitle">Welcome back, <strong>{{ session.get('username') }}</strong> 👋</p>
+      </div>
+      <button id="logout-btn" class="btn outline">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </header>
+
+    <main class="container">
+      <!-- Analytics Section -->
+      <section class="analytics-grid">
+        <div class="card">
+          <h3><i class="fas fa-list-check"></i> Total Tasks</h3>
+          <p id="total-tasks">0</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-check-circle"></i> Completed</h3>
+          <p id="completed-tasks">0</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-hourglass-half"></i> Pending</h3>
+          <p id="pending-tasks">0</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-chart-pie"></i> Completion %</h3>
+          <p id="completion-rate">0%</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-filter"></i> Priority</h3>
+          <p id="priority-distribution">No data</p>
+        </div>
+      </section>
+
+      <!-- Add Task Section -->
+      <section class="card form-card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+          <h2 id="form-title" style="margin: 0;"><i class="fas fa-plus-circle"></i> Add Task</h2>
+        </div>
+        <div id="message" class="message" aria-live="polite"></div>
+        <form id="task-form" class="form-grid">
+          <div>
+            <input id="task-title" type="text" placeholder="📝 Task title" required />
+          </div>
+          <div>
+            <input
+              id="task-description"
+              type="text"
+              placeholder="📋 Description (optional)"
+            />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <select id="task-priority">
+                <option value="low">🟢 Low Priority</option>
+                <option value="medium" selected>🟡 Medium Priority</option>
+                <option value="high">🔴 High Priority</option>
+              </select>
+            </div>
+            <div>
+              <select id="task-status">
+                <option value="pending" selected>⏳ Pending</option>
+                <option value="completed">✅ Completed</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="save-task-btn" type="submit" class="btn primary">
+              <i class="fas fa-save"></i> Save Task
+            </button>
+            <button id="cancel-edit-btn" type="button" class="btn outline hidden">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Tasks Table Section -->
+      <section class="card">
+        <h2><i class="fas fa-clipboard-list"></i> Your Tasks</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th><i class="fas fa-heading"></i> Title</th>
+                <th><i class="fas fa-align-left"></i> Description</th>
+                <th><i class="fas fa-flag"></i> Priority</th>
+                <th><i class="fas fa-tasks"></i> Status</th>
+                <th><i class="fas fa-calendar"></i> Created</th>
+                <th><i class="fas fa-cogs"></i> Actions</th>
+              </tr>
+            </thead>
+            <tbody id="task-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
